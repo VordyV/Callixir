@@ -3,6 +3,7 @@ from callixir._core import BasicDispatcher
 from callixir._exceptions import UnknownCommand, ConvertArg, ArgumentOverflow
 from callixir._command import Command
 import time
+import shlex
 
 class SyncDispatcher(BasicDispatcher):
 
@@ -14,7 +15,7 @@ class SyncDispatcher(BasicDispatcher):
 
 		t1 = time.perf_counter_ns()
 
-		command_name, *command_args = command_str.split()
+		command_name, *command_args = shlex.split(command_str)
 
 		command = self._get_command(command_name)
 
@@ -30,7 +31,6 @@ class SyncDispatcher(BasicDispatcher):
 			if command.fingerprint.has_varargs and i >= len(param_names):
 				additional_args.append(self._convert_arg(arg, command.fingerprint.param_types[param_names[-1]]))
 			else:
-				print(i, len(param_names))
 				if (i == 0 and len(param_names) == 0) or (i >= len(param_names)):
 					if not self.__arg_overflow:
 						raise ArgumentOverflow(
