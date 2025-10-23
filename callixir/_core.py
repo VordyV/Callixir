@@ -1,16 +1,18 @@
-from typing import Callable, Dict, List
+from typing import Callable, Dict, List, Any
 from ._exceptions import CommandAlreadyReg
 from ._fingerprint import Fingerprint
 from ._command_meta import CommandMeta
+from ._command import Command
 from inspect import signature, Parameter
 import functools
+import abc
 
-class Callixir:
+class BasicDispatcher(abc.ABC):
 
 	def __init__(self):
 		self.__commands: Dict[str, CommandMeta] = {}
 
-	def _get_fingerprint(self, func: Callable) -> Fingerprint:
+	def __get_fingerprint(self, func: Callable) -> Fingerprint:
 		sig = signature(func)
 		param_types = {}
 		has_varargs = False
@@ -26,25 +28,31 @@ class Callixir:
 			has_varargs=has_varargs
 		)
 
-	def _register_command(self, name: str, func: Callable):
+	def __register_command(self, name: str, func: Callable):
 		if name in self.__commands: raise CommandAlreadyReg(f"Cannot register the same command twice: '{name}'")
 		self.__commands[name] = CommandMeta(
 			name=name,
 			func=func,
-			fingerprint=self._get_fingerprint(func)
+			fingerprint=self.__get_fingerprint(func)
 		)
 
 	def register(self, name: str, func: Callable):
-		self._register_command(name=name, func=func)
+		self.__register_command(name=name, func=func)
 
 	# Decorator
 	def reg(self, name: str):
 
 		def decorator(func: Callable):
-			self._register_command(name=name, func=func)
+			self.__register_command(name=name, func=func)
 			return func
 
 		return decorator
 
 	@property
 	def commands(self) -> List[CommandMeta]: return [cmd for cmd in self.__commands.values()]
+
+	def execute(self, command_str: str) -> Command: pass
+
+	def _convert_arg(self, value: str, param_type: Callable) -> Any: pass
+
+	def _get_command(self, name: str) -> CommandMeta: return self.__commands.get(name)
