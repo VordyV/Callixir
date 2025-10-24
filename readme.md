@@ -34,3 +34,11 @@ print(result.result) # 3
 result = shell.execute("log 1 2 Hi 10 J 100 \"many words in one\" 999 71")
 print(result.result) # 1, 2, Hi, 10, J, 100, many words in one, 999, 71
 ```
+
+---
+
+## Installing
+
+Install Callixir via pip:
+
+`pip install callixir`
