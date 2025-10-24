@@ -1,7 +1,7 @@
 [project]
 name = "callixir"
 version = "0.0.1"
-description = ""
+description = "A Python module for calling functions by string with argument support"
 authors = [
     {name = "Vordy",email = "vorklab@outlook.com"}
 ]
