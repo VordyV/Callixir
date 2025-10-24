@@ -2,7 +2,7 @@
 
 A small and convenient tool for implementing command execution in any application. Suitable for a console application or a social media bot.
 
-Its principle of operation is simple: the user sends a string containing the command name and its arguments, if required. The next step is to execute the corresponding method based on this string.\
+Its principle of operation is simple: the user sends a string containing the command name and its arguments, if required. The next step is to execute the corresponding method based on this string.
 
 ___
 
