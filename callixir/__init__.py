@@ -11,11 +11,17 @@ from ._exceptions import (
 	ConvertArg,
 	CommandAlreadyReg
 )
-from .dispatchers import SyncDispatcher
-from .shells import SimpleShell
+from .dispatchers import (
+	SyncDispatcher,
+	AsyncDispatcher
+)
+from .shells import (
+	SimpleShell,
+	AsyncSimpleShell
+)
 
 
-__version__ = "0.0.1"
+__version__ = "0.0.2"
 
 __all__ = [
 	"BasicDispatcher",
