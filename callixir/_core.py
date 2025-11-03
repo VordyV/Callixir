@@ -19,16 +19,21 @@ class BasicDispatcher(abc.ABC):
 		sig = signature(func)
 		param_types = {}
 		has_varargs = False
+		keyword_arg = None
 
 		for param_name, param in sig.parameters.items():
 			if param.kind == Parameter.VAR_POSITIONAL:
 				has_varargs = True
+			if param.kind == Parameter.VAR_KEYWORD:
+				keyword_arg = param_name
+
 			param_types[param_name] = param.annotation if param.annotation != param.empty else None
 
 		return Fingerprint(
 			signature=sig,
 			param_types=param_types,
-			has_varargs=has_varargs
+			has_varargs=has_varargs,
+			keyword_arg=keyword_arg
 		)
 
 	def _register_command(self, name: str, func: Callable, desc: str):
