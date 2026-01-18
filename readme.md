@@ -4,6 +4,7 @@ A small and convenient tool for implementing command execution in any applicatio
 
 Its principle of operation is simple: the user sends a string containing the command name and its arguments, if required. The next step is to execute the corresponding method based on this string.
 
+Developed and tested on Python version **3.12**. Support for other, later versions has not been addressed yet.
 ___
 
 ## Example
