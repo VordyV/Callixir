@@ -1,5 +1,6 @@
 from typing import Callable, Dict, List, Any
-from ._exceptions import CommandAlreadyReg
+
+from ._exceptions import CommandAlreadyReg, UnknownCommand
 from ._fingerprint import Fingerprint
 from ._command_meta import CommandMeta
 from ._command import Command
@@ -91,4 +92,6 @@ class BasicDispatcher(abc.ABC):
 
 		return self.beautiful_help_format.cmd_separator.join(data)
 
-
+	def unregister(self, name: str):
+		if name not in self.__commands: raise UnknownCommand(f"Cannot unregister a command '{name}' that does not exist")
+		del self.__commands[name]
