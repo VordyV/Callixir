@@ -1,6 +1,6 @@
 from typing import Callable, Any
 from callixir._core import BasicDispatcher
-from callixir._exceptions import UnknownCommand, ConvertArg, ArgumentOverflow
+from callixir._exceptions import UnknownCommand, ConvertArg, ArgumentOverflow, MissingArguments
 from callixir._command import Command
 import time
 import shlex
@@ -54,6 +54,16 @@ class SyncDispatcher(BasicDispatcher):
 
 		bound_args = command.fingerprint.signature.bind_partial(*converted_args, *additional_args)
 		bound_args.apply_defaults()
+
+		if len(bound_args.args) < len(command.fingerprint.required_args):
+			missing = [
+				name for name in command.fingerprint.required_args
+				if name not in bound_args.arguments
+			]
+
+			raise MissingArguments(
+				f"Command '{command.name}' missing required arguments: {', '.join(missing)}"
+			)
 
 		t2 = time.perf_counter_ns()
 
